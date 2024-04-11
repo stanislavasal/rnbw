@@ -12,7 +12,6 @@ import {
 } from "@_constants/main";
 import { FileActions } from "@_node/apis";
 import {
-  _path,
   confirmAlert,
   FileSystemApis,
   getTargetHandler,
@@ -42,7 +41,9 @@ import {
   setClipboardData,
 } from "@_redux/main/processor";
 import { useAppState } from "@_redux/useAppState";
+import { BFSRequire } from "browserfs";
 
+const _path = BFSRequire("path");
 export const useNodeActionsHandler = () => {
   const dispatch = useDispatch();
   const {

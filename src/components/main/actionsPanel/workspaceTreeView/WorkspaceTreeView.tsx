@@ -19,7 +19,6 @@ import {
   TFileNodeData,
   confirmFileChanges,
 } from "@_node/file";
-import { _path } from "@_node/file/nohostApis";
 import { TNode, TNodeUid } from "@_node/types";
 import { MainContext } from "@_redux/main";
 import { setHoveredFileUid } from "@_redux/main/fileTree";
@@ -50,7 +49,9 @@ import {
   TreeItem,
 } from "@_components/common/treeComponents";
 import { NodeIcon } from "./workspaceComponents/NodeIcon";
+import { BFSRequire } from "browserfs";
 
+const _path = BFSRequire("path");
 const AutoExpandDelayOnDnD = 1 * 1000;
 export default function WorkspaceTreeView() {
   const dispatch = useDispatch();

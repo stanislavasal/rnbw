@@ -29,7 +29,6 @@ import { getInitialFileUidToOpen, sortFilesByASC } from "./helpers";
 import {
   _createIDBDirectory,
   _getIDBDirectoryOrFileStat,
-  _path,
   _readIDBDirectory,
   _readIDBFile,
   _removeIDBDirectoryOrFile,
@@ -37,6 +36,8 @@ import {
 } from "./nohostApis";
 import { TFileHandlerInfo, TFileHandlerInfoObj, TZipFileInfo } from "./types";
 import { toast } from "react-toastify";
+
+import { BFSRequire } from "browserfs";
 
 export const initIDBProject = (projectPath: string): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
@@ -79,6 +80,7 @@ export const loadIDBProject = async (
   isReload: boolean = false,
   fileTree?: TFileNodeTreeData,
 ): Promise<TIDBProjectLoaderBaseResponse> => {
+  const _path = BFSRequire("path");
   try {
     const deletedUidsObj: { [uid: TNodeUid]: true } = {};
     if (isReload) {
@@ -120,7 +122,7 @@ export const loadIDBProject = async (
           const c_uid = _path.join(p_uid, entry) as string;
           const c_path = _path.join(p_path, entry) as string;
           const stats = await _getIDBDirectoryOrFileStat(c_path);
-          const c_kind = stats.type === "DIRECTORY" ? "directory" : "file";
+          const c_kind = stats.isDirectory() ? "directory" : "file";
 
           const nameArr = entry.split(".");
           const c_ext = nameArr.length > 1 ? nameArr.pop() : undefined;
@@ -256,6 +258,7 @@ export const loadLocalProject = async (
         p_handler as FileSystemDirectoryHandle
       ).values()) {
         // skip system directories & hidden files
+        const _path = BFSRequire("path");
         if (SystemDirectories[osType][entry.name] || entry.name[0] === ".")
           continue;
 
@@ -421,7 +424,7 @@ export const downloadIDBProject = async (
     const dirHandlers: TZipFileInfo[] = [rootHandler];
     while (dirHandlers.length) {
       const { path, zip } = dirHandlers.shift() as TZipFileInfo;
-
+      const _path = BFSRequire("path");
       const entries = await _readIDBDirectory(path);
       await Promise.all(
         entries.map(async (entry) => {
@@ -432,7 +435,7 @@ export const downloadIDBProject = async (
           const c_path = _path.join(path, entry) as string;
           const stats = await _getIDBDirectoryOrFileStat(c_path);
           const c_name = entry;
-          const c_kind = stats.type === "DIRECTORY" ? "directory" : "file";
+          const c_kind = stats.isDirectory() ? "directory" : "file";
 
           let c_zip: JSZip | null | undefined;
           if (c_kind === "directory") {

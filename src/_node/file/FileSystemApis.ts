@@ -12,13 +12,14 @@ import {
 import {
   _createIDBDirectory,
   _getIDBDirectoryOrFileStat,
-  _path,
   _readIDBDirectory,
   _readIDBFile,
   _removeIDBDirectoryOrFile,
   _writeIDBFile,
 } from "./nohostApis";
+import { BFSRequire } from "browserfs";
 
+const _path = BFSRequire("path");
 // true: success, false: fail
 const createLocalSingleDirectoryOrFile = async ({
   parentUid,
@@ -292,7 +293,8 @@ const _moveIDBDirectory = async (
           const c_orgPath = _path.join(orgPath, entry);
           const c_newPath = _path.join(newPath, entry);
           const stats = await _getIDBDirectoryOrFileStat(c_orgPath);
-          const c_kind = stats.type === "DIRECTORY" ? "directory" : "file";
+
+          const c_kind = stats.isDirectory() ? "directory" : "file";
           if (c_kind === "directory") {
             dirQueue.push({ orgPath: c_orgPath, newPath: c_newPath });
           } else {

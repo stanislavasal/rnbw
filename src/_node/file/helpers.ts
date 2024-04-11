@@ -7,14 +7,15 @@ import {
 } from "@_types/main";
 
 import {
-  _path,
   TFileHandlerCollection,
   TFileHandlerInfoObj,
   TFileNodeData,
   TFileNodeTreeData,
   TNodeUid,
 } from "../";
+import { BFSRequire } from "browserfs";
 
+const _path = BFSRequire("path");
 export const sortFilesByASC = (handlerObj: TFileHandlerInfoObj) => {
   // sort by ASC directory/file
   Object.keys(handlerObj).map((uid) => {
