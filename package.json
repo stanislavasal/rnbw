@@ -2,6 +2,7 @@
   "name": "rainbow",
   "version": "0.0.6",
   "description": "",
+  "type": "module",
   "scripts": {
     "build": "cpx public/svg-icon.config.json dist -C && cpx public/nohost-sw.js dist -C && webpack --progress --mode production",
     "start": "webpack serve --mode development",

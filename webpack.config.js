@@ -1,8 +1,10 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MonacoEditorWebpackPlugin = require("monaco-editor-webpack-plugin");
 
-module.exports = {
+import path from "path"
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MonacoEditorWebpackPlugin from "monaco-editor-webpack-plugin";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+export default {
   entry: {
     // index entry file
     client: "./src/index.tsx",
