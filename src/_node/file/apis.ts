@@ -13,7 +13,6 @@ import { SystemDirectories } from "@_ref/SystemDirectories";
 import { verifyFileHandlerPermission } from "@_services/main";
 
 import {
-  fileHandlers,
   getIndexHtmlContent,
   getSubNodeUidsByBfs,
   TFileHandlerCollection,
@@ -24,7 +23,7 @@ import {
   TIDBProjectLoaderBaseResponse,
   TLocalProjectLoaderBaseResponse,
   TNodeUid,
-} from "../";
+} from "../index";
 import { getInitialFileUidToOpen, sortFilesByASC } from "./helpers";
 import {
   _createIDBDirectory,
@@ -38,6 +37,7 @@ import { TFileHandlerInfo, TFileHandlerInfoObj, TZipFileInfo } from "./types";
 import { toast } from "react-toastify";
 
 import { BFSRequire } from "browserfs";
+import { fileHandlers } from "../file/handlers";
 
 export const initIDBProject = (projectPath: string): Promise<void> => {
   return new Promise<void>((resolve, reject) => {

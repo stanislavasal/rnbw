@@ -108,7 +108,7 @@ export const _readIDBDirectory = async (path: string): Promise<string[]> => {
       path,
       (err: ApiError | null | undefined, files: string[] | undefined) => {
         if (err) {
-          // reject(err);
+          reject(err);
         } else {
           resolve(files || []);
         }

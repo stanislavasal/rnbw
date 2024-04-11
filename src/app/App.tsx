@@ -11,8 +11,8 @@ import { FSModule } from "browserfs/dist/node/core/FS";
 export default function App() {
   // setup nohost-serviceworker
   const [nohostReady, setNohostReady] = useState(false);
-  const [browserFSReady, setBrowserFSReady] = useState(false);
   useEffect(() => {
+    // Register nohost service worker
     if ("serviceWorker" in navigator) {
       const wb = new Workbox("/nohost-sw.js?route=rnbw");
       wb.register().then(() => {
@@ -20,9 +20,6 @@ export default function App() {
         LogAllow && console.log("nohost ready");
       });
     }
-  }, []);
-
-  useEffect(() => {
     // Initialize BrowserFS
     BrowserFS.configure(
       {
@@ -37,7 +34,6 @@ export default function App() {
 
         // Assign fs to window object
         window.fs = BrowserFS.BFSRequire("fs");
-        setBrowserFSReady(true);
       },
     );
   }, []);
@@ -45,7 +41,7 @@ export default function App() {
   return useMemo(() => {
     return (
       <>
-        {nohostReady && browserFSReady ? (
+        {nohostReady ? (
           <Router>
             <Routes>
               <Route path="/" element={<MainPage />} />
@@ -55,7 +51,7 @@ export default function App() {
         ) : null}
       </>
     );
-  }, [nohostReady, browserFSReady]);
+  }, [nohostReady]);
 }
 
 // extend global interfaces for nohost
