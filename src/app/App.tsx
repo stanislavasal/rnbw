@@ -17,6 +17,9 @@ export default function App() {
         LogAllow && console.log("nohost ready");
       });
     }
+    window.addEventListener("load", () => {
+      window.location.hash = "#/";
+    });
   }, []);
 
   return useMemo(() => {
