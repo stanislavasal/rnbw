@@ -17,15 +17,23 @@ import { THtmlNodeData } from "@_node/node";
 import { TNode, TNodeTreeData, TNodeUid } from "@_node/types";
 import { setFileTreeNodes, TProject } from "@_redux/main/fileTree";
 import { AnyAction } from "@reduxjs/toolkit";
+import { setLoadingFalse, setLoadingTrue } from "@_redux/main/processor";
 
-export const saveFileContent = async (
-  project: Omit<TProject, "handler">,
-  fileHandlers: TFileHandlerCollection,
-  uid: string,
-  fileData: TFileNodeData,
-) => {
+export const saveFileContent = async ({
+  project,
+  fileHandlers,
+  currentFileUid,
+  fileData,
+  dispatch,
+}: {
+  project: Omit<TProject, "handler">;
+  fileHandlers: TFileHandlerCollection;
+  currentFileUid: string;
+  fileData: TFileNodeData;
+  dispatch: Dispatch<AnyAction>;
+}) => {
   if (project.context === "local") {
-    const handler = fileHandlers[uid];
+    const handler = fileHandlers[currentFileUid];
     const writableStream = await (
       handler as FileSystemFileHandle
     ).createWritable();
@@ -33,9 +41,16 @@ export const saveFileContent = async (
     await writableStream.close();
   }
 
-  await _writeIDBFile(fileData.path, fileData.content);
-  fileData.changed = false;
-  fileData.orgContent = fileData.content;
+  try {
+    dispatch(setLoadingTrue());
+    await _writeIDBFile(fileData.path, fileData.content);
+    fileData.changed = false;
+    fileData.orgContent = fileData.content;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    dispatch(setLoadingFalse());
+  }
 };
 export const getPreviewPath = (
   fileTree: TFileNodeTreeData,
