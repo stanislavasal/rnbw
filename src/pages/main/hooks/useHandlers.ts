@@ -217,7 +217,6 @@ export const useHandlers = () => {
       dispatch(setFileTree(_fileTree));
       dispatch(setFileHandlers(_fileHandlers));
       // need to open another file if the current open file is deleted
-      // if (deletedUidsObj[currentFileUid] || !currentFileUid) {
       if (_initialFileUidToOpen !== "" || deletedUidsObj[currentFileUid]) {
         dispatch(setCurrentFileUid(_initialFileUidToOpen));
         dispatch(
@@ -231,9 +230,6 @@ export const useHandlers = () => {
         dispatch(setCurrentFileUid(""));
         dispatch(setCurrentFileContent(""));
       }
-      // } else {
-
-      // }
       // update file tree view state
       dispatch(updateFileTreeViewState({ deletedUids: deletedUids }));
       // build nohost idb
