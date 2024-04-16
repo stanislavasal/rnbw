@@ -143,8 +143,10 @@ export default function WorkspaceTreeView() {
   useEffect(
     function RevertWcOpen() {
       if (activePanel !== "code") {
-        if (webComponentOpen) dispatch(setWebComponentOpen(false));
-        openFile(prevRenderableFileUid);
+        if (webComponentOpen) {
+          dispatch(setWebComponentOpen(false));
+          openFile(prevRenderableFileUid);
+        }
       }
     },
     [activePanel],
