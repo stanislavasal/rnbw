@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Command } from "cmdk";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +38,18 @@ import ResizablePanels from "./ResizablePanels";
 import { debounce } from "./helper";
 
 export default function MainPage() {
+
+  const [isNewHovered, setIsNewHovered] = useState(true);
+  const [isOpenHovered, setIsOpenHovered] = useState(false);
+  const [isGuideHovered, setIsGuideHovered] = useState(false);
+  const [isSupportHovered, setIsSupportHovered] = useState(false);
+  const [isCommunityHovered, setIsCommunityHovered] = useState(false);
+  const [isThemeHovered, setIsThemeHovered] = useState(false);
+  const [isAutosaveHovered, setIsAutosaveHovered] = useState(false);
+  const [isFormatCodeHovered, setIsFormatCodeHovered] = useState(false);
+  const [menuDescription, setMenuDescription] = useState("Start a new project");
+  const [menuTitle, setMenuTitle] = useState("New");
+
   // redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -270,20 +282,19 @@ export default function MainPage() {
               }
             />
           </div>
-
           {/* modal content */}
           <div
             className={
               currentCmdkPage !== "Add" &&
-              currentCmdkPage !== "Jumpstart" &&
-              currentCmdkPage !== "Turn into"
+                currentCmdkPage !== "Jumpstart" &&
+                currentCmdkPage !== "Turn into"
                 ? ""
                 : "box-l direction-column align-stretch box"
             }
             style={{
               ...(currentCmdkPage !== "Add" &&
-              currentCmdkPage !== "Jumpstart" &&
-              currentCmdkPage !== "Turn into"
+                currentCmdkPage !== "Jumpstart" &&
+                currentCmdkPage !== "Turn into"
                 ? { width: "100%" }
                 : {}),
               ...(validMenuItemCount === 0
@@ -292,8 +303,9 @@ export default function MainPage() {
             }}
           >
             {/* menu list - left panel */}
-            <div className="padding-m box">
-              <div className="direction-row align-stretch">
+            {/* <div className="padding-m box"> */}
+            <div className="box">
+              <div className="padding-m direction-row align-stretch">
                 <Command.List
                   style={{
                     maxHeight: "600px",
@@ -403,6 +415,91 @@ export default function MainPage() {
                                 "rnbw-cmdk-menu-item-description":
                                   command.Description,
                               }}
+                              onMouseEnter={() => {
+                                setMenuDescription(command.Description || "");
+                                setMenuTitle(command.Name || "");
+                                if (command.Name === "New") {
+                                  setIsNewHovered(true);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                  
+                                }
+                                else if (command.Name === "Open") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(true);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Guide") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(true);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Support") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(true);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Community") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(true);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Theme") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(true);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Autosave") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(true);
+                                  setIsFormatCodeHovered(false);
+                                }
+                                else if (command.Name === "Format Code") {
+                                  setIsNewHovered(false);
+                                  setIsOpenHovered(false);
+                                  setIsGuideHovered(false);
+                                  setIsSupportHovered(false);
+                                  setIsCommunityHovered(false);
+                                  setIsThemeHovered(false);
+                                  setIsAutosaveHovered(false);
+                                  setIsFormatCodeHovered(true);
+                                }
+                              }}
                               onSelect={async () => {
                                 LogAllow && console.log("onSelect", command);
 
@@ -460,11 +557,12 @@ export default function MainPage() {
                                   );
                                 }
                               }}
+
                             >
                               <div className="justify-stretch padding-s align-center">
                                 <div className="gap-s align-center">
                                   {currentCmdkPage === "Jumpstart" &&
-                                  command.Name === "Theme" ? (
+                                    command.Name === "Theme" ? (
                                     <>
                                       {/* detect Theme Group and render check boxes */}
                                       <div className="padding-xs">
@@ -520,7 +618,7 @@ export default function MainPage() {
                                     <>
                                       <div className="padding-xs">
                                         {typeof command.Icon === "string" &&
-                                        command["Icon"] !== "" ? (
+                                          command["Icon"] !== "" ? (
                                           <SVGIcon {...{ class: "icon-xs" }}>
                                             {command["Icon"]}
                                           </SVGIcon>
@@ -538,7 +636,7 @@ export default function MainPage() {
                                   {command["Keyboard Shortcut"] &&
                                     (
                                       command[
-                                        "Keyboard Shortcut"
+                                      "Keyboard Shortcut"
                                       ] as TCmdkKeyMap[]
                                     )?.map((keyMap, index) => (
                                       <div className="gap-s" key={index}>
@@ -558,11 +656,11 @@ export default function MainPage() {
                                             {keyMap.key[0].toUpperCase() +
                                               keyMap.key.slice(1) +
                                               (index !==
-                                              (
-                                                command[
+                                                (
+                                                  command[
                                                   "Keyboard Shortcut"
-                                                ] as TCmdkKeyMap[]
-                                              ).length -
+                                                  ] as TCmdkKeyMap[]
+                                                ).length -
                                                 1
                                                 ? ","
                                                 : "")}
@@ -575,16 +673,59 @@ export default function MainPage() {
                                     ))}
                                 </div>
                               </div>
+
                             </Command.Item>
                           ) : null;
                         })}
+
                       </Command.Group>
                     );
                   })}
                 </Command.List>
+                <div className="padding-m align-center border-left" style={{ width: "200%", marginLeft: "0.7rem"}}>
+                  <div id="label1"  className={isNewHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">New.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label2" className={isOpenHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Open.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label3" className={isGuideHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Guide.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label4" className={isSupportHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Support.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label5" className={isCommunityHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Community.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label6" className={isThemeHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Theme.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label7" className={isAutosaveHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Autosave.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                  <div id="label8" className={isFormatCodeHovered ? "column justify-center align-center" : "hidden"}>
+                    <div className="padding-s">Format.svg</div>
+                    <div className="text-l padding-s">{menuTitle}</div>
+                    <div className="text-m">{menuDescription}</div>
+                  </div>
+                </div>
               </div>
             </div>
-
             {/* description - right panel */}
             {(currentCmdkPage === "Add" || currentCmdkPage === "Jumpstart") &&
               false && (

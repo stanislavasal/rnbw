@@ -210,13 +210,13 @@ export const useCmdk = ({ cmdkReferenceData, importProject }: IUseCmdk) => {
   }, []);
   const onOpenSupportPage = useCallback(() => {
     window.open(
-      "https://github.com/orgs/rnbwdev/discussions",
+      "mailto:hello@rnbw.company",
       "_blank",
       "noreferrer",
     );
   }, []);
   const onOpenCommunityPage = useCallback(() => {
-    window.open("https://discord.gg/HycXz8TJkd", "_blank", "noreferrer");
+    window.open("https://github.com/orgs/rnbwdev/discussions", "_blank", "noreferrer");
   }, []);
   const onToggleTheme = useCallback(() => {
     switch (theme) {
